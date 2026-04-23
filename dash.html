@@ -2668,7 +2668,7 @@ function fazerLogout() {
 // ── Mapeia email para agente do dashboard ──
 function emailParaAgente(email) {
   const mapa = {
-    'ingrid.agenciapinguim@gmail.com':    'ingrid',
+    'ingrid.agenciapinguim@gmail.com': 'ingrid',
     'fernandalisboa.agenciapinguim@gmail.com': 'fernanda'
   };
   return mapa[email.toLowerCase()] || null;
@@ -2689,7 +2689,7 @@ window.addEventListener('usuario-autenticado', function(e) {
   if (badgeEl)   { badgeEl.textContent = email; badgeEl.style.display = 'block'; }
   if (logoutBtn) { logoutBtn.style.display = 'block'; }
 
-  // Seleciona automaticamente o agente correto com base no email logado
+  // Seleciona automaticamente o agente correto
   if (agente) {
     currentAgent = agente;
     document.querySelectorAll('.agent-btn').forEach(function(btn) {
@@ -2701,11 +2701,6 @@ window.addEventListener('usuario-autenticado', function(e) {
   // Carrega dados e inicia dashboard
   init();
 
-  // Inicia sincronização em tempo real — atualiza automaticamente
-  // quando a outra tutora fizer alterações
+  // Inicia sincronização em tempo real
   startRealtimeSync();
-}
 });
-</script>
-</body>
-</html>

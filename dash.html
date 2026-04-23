@@ -2725,23 +2725,41 @@ window.addEventListener('usuario-autenticado', function (e) {
 firebase.auth().onAuthStateChanged(function(user) {
 
   if (user) {
-    // ✅ Usuário logado → libera dashboard
-
-    // remove o loading
     const overlay = document.getElementById('auth-loading');
     if (overlay) overlay.style.display = 'none';
 
-    // dispara o evento que você já usa
     window.dispatchEvent(new CustomEvent('usuario-autenticado', {
       detail: { email: user.email }
     }));
 
   } else {
-    // ❗ Usuário NÃO logado → volta pro login
     window.location.replace('index.html');
   }
 
 });
 </script>
-</body>
-</html>
+
+<script>
+// ── Quando o usuário for autenticado, configura o dashboard ──
+window.addEventListener('usuario-autenticado', function (e) {
+
+  const email = e.detail.email;
+  const agente = emailParaAgente(email);
+
+  if (agente) {
+    currentAgent = agente;
+
+    document.querySelectorAll('.agent-btn').forEach(function (btn) {
+      btn.classList.remove('active');
+
+      if (btn.classList.contains(agente)) {
+        btn.classList.add('active');
+      }
+    });
+  }
+
+  init();
+  startRealtimeSync();
+
+});
+</script>

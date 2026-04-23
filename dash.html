@@ -2205,7 +2205,6 @@ function bulkDelete(){
   DB.mentorados=DB.mentorados.filter(m=>!selectedIds.has(m.id));
   batch.commit();
   clearSelection();renderAll();
-}
 // ═══════════════════════════════════════
 // CRUD MENTORADOS
 // ═══════════════════════════════════════

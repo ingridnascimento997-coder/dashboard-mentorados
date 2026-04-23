@@ -2740,26 +2740,55 @@ firebase.auth().onAuthStateChanged(function(user) {
 </script>
 
 <script>
-// ── Quando o usuário for autenticado, configura o dashboard ──
-window.addEventListener('usuario-autenticado', function (e) {
 
-  const email = e.detail.email;
-  const agente = emailParaAgente(email);
+// 🔐 CONTROLE DE AUTENTICAÇÃO
+firebase.auth().onAuthStateChanged(function(user) {
 
-  if (agente) {
-    currentAgent = agente;
+  if (user) {
 
-    document.querySelectorAll('.agent-btn').forEach(function (btn) {
-      btn.classList.remove('active');
+    const overlay = document.getElementById('auth-loading');
+    if (overlay) overlay.style.display = 'none';
 
-      if (btn.classList.contains(agente)) {
-        btn.classList.add('active');
-      }
-    });
+    const email = user.email;
+    const agente = emailParaAgente(email);
+
+    // UI
+    const badgeEl = document.getElementById('badge-usuario');
+    const logoutBtn = document.getElementById('btn-logout');
+
+    if (badgeEl) {
+      badgeEl.textContent = email;
+      badgeEl.style.display = 'block';
+    }
+
+    if (logoutBtn) {
+      logoutBtn.style.display = 'block';
+    }
+
+    // Seleção de agente
+    if (agente) {
+      currentAgent = agente;
+
+      document.querySelectorAll('.agent-btn').forEach(function (btn) {
+        btn.classList.remove('active');
+
+        if (btn.classList.contains(agente)) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    // Inicializa dashboard
+    init();
+    startRealtimeSync();
+
+  } else {
+    window.location.replace('index.html');
   }
 
-  init();
-  startRealtimeSync();
-
 });
+
 </script>
+
+</body>
+</html>

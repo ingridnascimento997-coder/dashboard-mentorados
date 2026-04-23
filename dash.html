@@ -2652,7 +2652,6 @@ function init(){
   setInterval(()=>{renderAlerts();renderSLA();renderSlaAlertsOv();updateBadges();},60000);
 }
 // init() é chamado pelo listener 'usuario-autenticado' após autenticação Firebase
-
 // ═══════════════════════════════════════════════════════
 //  INTEGRAÇÃO FIREBASE AUTH NO DASHBOARD
 // ═══════════════════════════════════════════════════════
@@ -2660,7 +2659,8 @@ function init(){
 // ── Função de logout ──
 function fazerLogout() {
   if (!confirm('Deseja sair do dashboard?')) return;
-  auth.signOut().then(function() {
+
+  auth.signOut().then(function () {
     window.location.replace('index.html');
   });
 }
@@ -2671,36 +2671,52 @@ function emailParaAgente(email) {
     'ingrid.agenciapinguim@gmail.com': 'ingrid',
     'fernandalisboa.agenciapinguim@gmail.com': 'fernanda'
   };
+
   return mapa[email.toLowerCase()] || null;
 }
 
 // ── Quando o usuário for autenticado, configura o dashboard ──
-window.addEventListener('usuario-autenticado', function(e) {
-  const email  = e.detail.email;
+window.addEventListener('usuario-autenticado', function (e) {
+
+  const email = e.detail.email;
   const agente = emailParaAgente(email);
 
   // Remove overlay de carregamento
   const overlay = document.getElementById('auth-loading');
-  if (overlay) overlay.style.display = 'none';
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
 
-  // Mostra badge e botão de logout no header
-  const badgeEl   = document.getElementById('badge-usuario');
+  // Mostra badge e botão de logout
+  const badgeEl = document.getElementById('badge-usuario');
   const logoutBtn = document.getElementById('btn-logout');
-  if (badgeEl)   { badgeEl.textContent = email; badgeEl.style.display = 'block'; }
-  if (logoutBtn) { logoutBtn.style.display = 'block'; }
+
+  if (badgeEl) {
+    badgeEl.textContent = email;
+    badgeEl.style.display = 'block';
+  }
+
+  if (logoutBtn) {
+    logoutBtn.style.display = 'block';
+  }
 
   // Seleciona automaticamente o agente correto
   if (agente) {
     currentAgent = agente;
-    document.querySelectorAll('.agent-btn').forEach(function(btn) {
+
+    document.querySelectorAll('.agent-btn').forEach(function (btn) {
       btn.classList.remove('active');
-      if (btn.classList.contains(agente)) btn.classList.add('active');
+
+      if (btn.classList.contains(agente)) {
+        btn.classList.add('active');
+      }
     });
   }
 
-  // Carrega dados e inicia dashboard
+  // Inicializa dashboard
   init();
 
-  // Inicia sincronização em tempo real
+  // Inicia sincronização
   startRealtimeSync();
+
 });
